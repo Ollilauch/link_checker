@@ -44,4 +44,5 @@ for i in range(len(titles)):
 #links = driver.find_elements(By.CSS_SELECTOR, '[href]')
 #print(links)
 
-driver.close
+driver.close()
+driver.quit()
