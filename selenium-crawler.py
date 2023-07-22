@@ -11,6 +11,7 @@ from datetime import date
 from time import sleep
 from threading import Thread
 import sys
+import json
 
 finished = False
 
@@ -50,8 +51,15 @@ def embedded_to_video(link):
 
     return video_link
 
+#def send_webhook(content: str):
+    webhook_url = 'https://discord.com/api/webhooks/1130560129394298992/Vmh5fo-Ej9A98HUvFl9H62aYb5sGmbT7gnMAuDFBsTJDwGa4Ju-Y4JML07FlETh3ldsH'
+    data = {    'content' : content
+            }
+    r = requests.post(webhook_url, data=json.dumps(data), headers={ 'content-type' : 'application/json'})
+
 def check_youtube_videos():
     global finished
+    content = ' '
 
     #START FIREFOX SESSION
     os.environ['MOZ_HEADLESS'] = '1'
@@ -78,6 +86,7 @@ def check_youtube_videos():
 
     if elems != None:
         finished = True
+        sleep(2)
 
     max_len_titles = max(len(str(titles[l].get_attribute('innerHTML'))) for l in range(len(titles))) + 1
     max_len_elems = max(len(str(elems[l].get_attribute('src'))) for l in range(len(elems))) + 1
@@ -87,7 +96,9 @@ def check_youtube_videos():
                                     embedded_to_video(str(elems[i].get_attribute('src'))).ljust(max_len_elems), " | status: ",
                                     check_link(embedded_to_video(elems[i].get_attribute('src')))))
         #print("-" * (len("title: ") + (max_len_titles) + len(" | ") + (max_len_elems) + len("status: Unknown")))
+        content.join(f'"title: " {str(titles[i].get_attribute("innerHTML")).ljust(max_len_titles)} " | " {embedded_to_video(str(elems[i].get_attribute("src"))).ljust(max_len_elems)} " | status: " {check_link(embedded_to_video(elems[i].get_attribute("src")))} "\n"')
 
+#    send_webhook(content)
     #for elem in elems:
     #    print(elem.get_attribute('src'))
 
