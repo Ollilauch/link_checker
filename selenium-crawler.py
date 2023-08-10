@@ -13,6 +13,7 @@ from threading import Thread
 import sys
 import json
 
+start_url = 'https://eye-tracking-education.com/mehr-als-50-verschiedene-eye-tracking-anwendungen-auf-einen-blick' # URL where link_checker starts
 finished = False
 
 class bcolors:
@@ -30,7 +31,7 @@ def check_link(link):
     r = requests.get(link)
 
     if (("Video nicht verfügbar" in r.text or "Video unavailable" in r.text or "Video ist privat" in r.text) or (r.status_code != 200)) == False:
-        return "200"
+        return f"{bcolors.OKGREEN}200{bcolors.ENDC}"
     elif (("Video nicht verfügbar" in r.text or "Video unavailable" in r.text or "Video ist privat" in r.text) or (r.status_code != 200)) == True:
         return f"{bcolors.FAIL}404{bcolors.ENDC}"
     else:
@@ -64,7 +65,8 @@ def check_youtube_videos():
     #START FIREFOX SESSION
     os.environ['MOZ_HEADLESS'] = '1'
     driver = webdriver.Firefox()
-    start_url = [URL]
+    if not driver:
+        return 1
     driver.get(start_url)
 
     #FIND AND CLICK BORLAND PRIVACY COOKIES
