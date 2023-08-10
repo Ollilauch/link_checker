@@ -13,7 +13,7 @@ from threading import Thread
 import sys
 import json
 
-start_url = 'https://eye-tracking-education.com/mehr-als-50-verschiedene-eye-tracking-anwendungen-auf-einen-blick' # URL where link_checker starts
+start_url = 'URL' # URL where link_checker starts
 finished = False
 
 class bcolors:
